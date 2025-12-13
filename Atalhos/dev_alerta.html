@@ -3,80 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ambiente de Desenvolvimento - Anki</title>
+    <title>Teste de Atalhos Anki</title>
     
     <link rel="stylesheet" href="../Card-Certo_Errado/estilo.css">
     
     <style>
-        /* CSS EXTRA SÓ PARA O AMBIENTE DE TESTE (Para centralizar e dar fundo) */
-        body { background-color: #2f2f31; margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .test-container { width: 90%; max-width: 600px; }
+        body {
+            background-color: #2f2f31;
+            padding: 20px;
+        }
     </style>
-    </head>
+</head>
 <body>
 
-    <div class="test-container">
-        
-        <div class="card" id="card_teste_1">
-            !!Cuidado! A banca costuma trocar "defeso" por "permitido".
-        </div>
-        <br>
-        
-        <div class="card" id="card_teste_2">
-            $$Art. 5º CF | Todos são iguais perante a lei, sem distinção de qualquer natureza.
-        </div>
+    <div class="card" id="teste_1">
+        !!Cuidado! Esta é uma pegadinha clássica.
+    </div>
+    <br>
+    
+    <div class="card" id="teste_2">
+        $$Art. 5º | Todos são iguais perante a lei.
+    </div>
+    <br>
 
+    <div class="card" id="teste_3">
+        jjSúmula Vinculante 10 | A cláusula de reserva de plenário...
+    </div>
+    <br>
+
+    <div class="card" id="teste_4">
+        O texto pode ser vvVerdevv, aaAzulaa ou mmMarcado de Amarelomm.
     </div>
 
     <script>
-        // Função para processar os atalhos em um elemento específico
         function processarAtalhos(idElemento) {
             var campo = document.getElementById(idElemento);
-            if (!campo) return; // Segurança caso o elemento não exista
+            if (!campo) return;
 
+            // Pega o HTML preservando a formatação
             var conteudo = campo.innerHTML.trim();
 
-            // --- 1. ATALHO DE ALERTA (!!) ---
+            // --- 1. ATALHOS DE BLOCO (!!, $$, jj) ---
+
+            // A. Alerta (!!)
             if (conteudo.startsWith("!!")) {
                 var texto = conteudo.substring(2).trim();
                 var html = `
                     <div class="alert-card alert-danger">
                         <div class="alert-card__bar"></div>
-                        <div class="alert-card__icon">️!</div>
+                        <div class="alert-card__icon">!</div>
                         <div class="alert-card__text">${texto}</div>
                     </div>`;
                 campo.innerHTML = html;
+                return; // Para aqui se for bloco
             }
 
-            // --- 2. ATALHO DE LEI ($$) ---
-            // Suporta formato: "$$Título | Conteúdo" ou apenas "$$Conteúdo"
-            else if (conteudo.startsWith("$$")) {
-                var textoBruto = conteudo.substring(2).trim();
-                var partes = textoBruto.split("|");
-                
-                var titulo = "⚖️ Legislação / Entendimento"; // Título Padrão
-                var corpo = textoBruto;
-
-                // Se o usuário usou a barra vertical "|" para separar título
-                if (partes.length > 1) {
-                    titulo = "⚖️ " + partes[0].trim();
-                    corpo = partes.slice(1).join("|").trim(); // Junta o resto caso tenha mais pipes
-                }
-
-                var html = `
-                    <details class="glass-details">
-                        <summary class="glass-summary">${titulo}</summary>
-                        <div class="glass-body">${corpo}</div>
-                    </details>`;
-                campo.innerHTML = html;
+            // B. Lei ($$)
+            if (conteudo.startsWith("$$")) {
+                processarDetalhe(campo, conteudo, "$$", "⚖️ Legislação / Entendimento");
+                return;
             }
+
+            // C. Jurisprudência (jj)
+            if (conteudo.startsWith("jj")) {
+                processarDetalhe(campo, conteudo, "jj", "⚖️ Jurisprudência");
+                return;
+            }
+
+            // --- 2. ATALHOS DE TEXTO (vv, aa, mm) ---
+            // Se não for bloco, processa as cores no texto existente
+            
+            var novoHtml = conteudo;
+
+            // Verde (vv) - Usa estilo direto para garantir
+            novoHtml = novoHtml.replace(/vv(.*?)vv/g, '<b style="color: #28a745;">$1</b>');
+
+            // Azul (aa) - Usa estilo direto
+            novoHtml = novoHtml.replace(/aa(.*?)aa/g, '<b style="color: #007bff;">$1</b>');
+
+            // Marca Texto (mm) - Usa estilo direto
+            novoHtml = novoHtml.replace(/mm(.*?)mm/g, '<span style="background-color: #ffeb3b; color: #000; padding: 0 4px; border-radius: 3px;">$1</span>');
+
+            campo.innerHTML = novoHtml;
         }
 
-        // --- EXECUÇÃO ---
-        // No Anki real, você chamará sem ID, ou usará o ID dos campos.
-        // Aqui chamamos para os dois exemplos de teste:
-        processarAtalhos("card_teste_1");
-        processarAtalhos("card_teste_2");
+        // Função auxiliar para Lei e Jurisprudência (evita repetição de código)
+        function processarDetalhe(campo, conteudo, gatilho, tituloPadrao) {
+            var textoBruto = conteudo.substring(2).trim();
+            var partes = textoBruto.split("|");
+            
+            var titulo = tituloPadrao;
+            var corpo = textoBruto;
+
+            if (partes.length > 1) {
+                titulo = "⚖️ " + partes[0].trim();
+                corpo = partes.slice(1).join("|").trim();
+            }
+
+            // Mantém a mesma estrutura CSS que você já aprovou
+            var html = `
+                <details class="glass-details">
+                    <summary class="glass-summary">${titulo}</summary>
+                    <div class="glass-body">${corpo}</div>
+                </details>`;
+            campo.innerHTML = html;
+        }
+
+        // Executa os testes
+        processarAtalhos("teste_1");
+        processarAtalhos("teste_2");
+        processarAtalhos("teste_3");
+        processarAtalhos("teste_4");
     </script>
 
 </body>
