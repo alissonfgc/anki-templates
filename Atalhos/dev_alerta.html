@@ -3,204 +3,226 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teste Geral de Atalhos (Visual Original)</title>
+    <title>Teste Final - Card Dark Pro</title>
     
     <style>
-        /* --- 1. CONFIGURAÇÃO GERAL --- */
-        body {
-            background-color: #2f2f31;
-            padding: 20px;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-            color: white;
-        }
-        
-        .card-container {
-            background-color: #3e3e40;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #555;
-        }
+        /* ================================================= */
+        /* 1. O SEU CSS (Copiado exatamente como enviou)    */
+        /* ================================================= */
 
-        /* --- 2. CSS DOS ALERTAS (Fixos para garantir funcionamento) --- */
-        .alert-card {
-            display: flex; align-items: stretch; border-radius: 8px; overflow: hidden; margin: 10px 0;
-            border: 1px solid transparent; background-color: rgba(255, 255, 255, 0.05);
+        /* ATALHOS REAPROVEITÁVEIS */
+        .txt-green { color:#32a852; }
+        .txt-red   { color:#d13242; }
+        .txt-blue  { color:#323dd1; }
+
+        /* Details “vidro” genéricos */
+        .glass-details {
+            width:100%;
+            border-radius:14px;
+            padding:0;
+            margin:8px 0;
+            background:rgba(255,255,255,0.55);
+            backdrop-filter:blur(12px) saturate(160%);
+            -webkit-backdrop-filter:blur(12px) saturate(160%);
+            border:1px solid rgba(255,255,255,0.45);
+            box-shadow:0 6px 14px rgba(0,0,0,0.18);
+            overflow:hidden;
+            text-align: left; /* Garante alinhamento interno */
         }
-        .alert-card__bar { width: 6px; }
-        .alert-card__icon { display: flex; align-items: center; justify-content: center; padding: 0 15px; font-size: 22px; }
-        .alert-card__text { padding: 10px; flex: 1; font-size: 0.95em; }
-
-        /* Cores dos Alertas */
-        .alert-danger { background-color: rgba(220, 53, 69, 0.15); border-color: rgba(220, 53, 69, 0.3); }
-        .alert-danger .alert-card__bar { background-color: #dc3545; }
-        .alert-danger .alert-card__icon { color: #dc3545; }
-        .alert-danger .alert-card__text { color: #ffb3b3; }
-
-        .alert-info { background-color: rgba(23, 162, 184, 0.15); border-color: rgba(23, 162, 184, 0.3); }
-        .alert-info .alert-card__bar { background-color: #17a2b8; }
-        .alert-info .alert-card__icon { color: #17a2b8; }
-        .alert-info .alert-card__text { color: #d1ecf1; }
-
-        .alert-warning { background-color: rgba(255, 193, 7, 0.15); border-color: rgba(255, 193, 7, 0.3); }
-        .alert-warning .alert-card__bar { background-color: #ffc107; }
-        .alert-warning .alert-card__icon { color: #ffc107; }
-        .alert-warning .alert-card__text { color: #fff3cd; }
-
-        .alert-success { background-color: rgba(40, 167, 69, 0.15); border-color: rgba(40, 167, 69, 0.3); }
-        .alert-success .alert-card__bar { background-color: #28a745; }
-        .alert-success .alert-card__icon { color: #28a745; }
-        .alert-success .alert-card__text { color: #d4edda; }
-
-        /* --- 3. CSS DE VIDRO (GLASSMORPHISM) --- */
-        /* Tentei replicar o estilo original aqui. Se estiver diferente, substitua pelo seu CSS! */
-        
-        details.glass-details {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            margin: 10px 0;
-            overflow: hidden;
-            backdrop-filter: blur(5px); /* O efeito de desfoque */
+        .glass-summary {
+            font-size:1.1em;
+            font-weight:700;
+            padding:10px 14px;
+            text-align:center;
+            cursor:pointer;
+            list-style:none;
+            color:#111;
+            background:rgba(255,255,255,0.25);
         }
-        
-        summary.glass-summary {
-            padding: 12px 15px;
-            cursor: pointer;
-            font-weight: 600;
-            background: rgba(255, 255, 255, 0.02);
-            list-style: none;
-            color: #ffffff;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            transition: background 0.2s;
-        }
-        
-        summary.glass-summary:hover {
-            background: rgba(255, 255, 255, 0.08);
-        }
-        
-        summary.glass-summary::marker { display: none; } /* Remove setinha padrão */
-        
+        /* Remove a seta padrão do details em alguns navegadores */
+        .glass-summary::-webkit-details-marker { display: none; }
+
         .glass-body {
-            padding: 15px;
-            color: #dddddd;
-            line-height: 1.6;
-            font-size: 0.95em;
+            padding:12px 18px 14px;
+            font-size:15px;
+            line-height:1.48;
+            color:#000;
+            text-align:justify;
         }
 
-        /* Variação para Jurisprudência (Borda Roxa Lateral) */
-        /* Se não gostar da borda roxa, basta apagar a linha 'border-left' abaixo */
-        summary.glass-summary.juris-style {
-            border-left: 4px solid #8a2be2; 
+        /* Alert cards reutilizáveis */
+        .alert-card{
+            position:relative;
+            display:flex;
+            align-items:center;
+            width:100%;
+            padding:14px 16px;
+            border-radius:12px;
+            background:#1a1f66;
+            box-shadow:0 6px 16px rgba(0,0,0,.08);
+            color:#bfe4ff;
+            font-weight:700;
+            margin:8px 0;
+            text-align: left;
+        }
+        .alert-card__bar{
+            position:absolute;
+            left:0; top:0; bottom:0;
+            width:8px;
+            background:#55a9ff;
+            border-radius:12px 0 0 12px;
+        }
+        .alert-card__icon{
+            flex:0 0 auto;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            width:28px; height:28px;
+            margin-left:12px;
+            color:inherit;
+            background:rgba(142,203,255,.15);
+            border:2px solid #8ecbff;
+            border-radius:50%;
+            font-family:inherit;
+        }
+        .alert-card__text{
+            margin:0 0 0 12px;
+            color:#9fd6ff;
+            line-height:1.25;
+            font-size:1rem;
+        }
+        .alert-danger{
+            background:#6b1111;
+        }
+        .alert-danger .alert-card__bar{
+            background:#e74c3c;
+        }
+        .alert-danger .alert-card__text{
+            color:#ffd6d1;
         }
 
-        /* --- 4. CSS DE TEXTO --- */
-        .txt-verde { color: #28a745; font-weight: bold; }
-        .txt-azul { color: #007bff; font-weight: bold; }
-        .txt-vermelho { color: #dc3545; font-weight: bold; }
-        .marca-texto { background-color: #ffeb3b; color: black; padding: 2px 4px; border-radius: 4px; }
+        /* TEMA DARK PRO BASE */
+        .card {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+            font-size: 18px;
+            text-align: center;
+            color: #f0f0f0;
+            background-color: #646464;
+            /* SVG Background simplificado para o teste não ficar pesado */
+            background-image: radial-gradient(#777 1px, transparent 1px);
+            background-size: 20px 20px;
+            padding: 20px;
+            min-height: 100vh;
+        }
 
+        .container-geral {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 24px;
+            border-radius: 18px;
+            background: rgba(26, 28, 32, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
     </style>
 </head>
 <body>
 
-    <h3>1. Blocos de Alerta</h3>
-    <div class="card-container" id="teste_1">
-        !!Cuidado! Pegadinha da banca.
-        <br><br>
-        iiInfo: Prazo processual de 15 dias.
-        <br><br>
-        wwAviso: Jurisprudência superada.
-        <br><br>
-        bbBizu: Regra do Mínimo Múltiplo.
-    </div>
+    <div class="card">
+        <div class="container-geral" id="campo_teste">
+            
+            !!Cuidado! Isso é uma pegadinha da banca.
+            <br><br>
+            $$Art. 5º CF | Todos são iguais perante a lei, sem distinção de qualquer natureza.
+            <br><br>
+            jjSúmula Vinculante 10 | A cláusula de reserva de plenário deve ser respeitada.
+            <br><br>
+            Texto normal com vvpalavra verdevv e aaazul aqui aa.
 
-    <h3>2. Blocos de Vidro (Original)</h3>
-    <div class="card-container" id="teste_2">
-        $$Art. 5º | Todos são iguais perante a lei, sem distinção de qualquer natureza.
-        <br><br>
-        jjSúmula Vinculante 10 | A cláusula de reserva de plenário exige votação da maioria absoluta.
-    </div>
-
-    <h3>3. Texto Colorido</h3>
-    <div class="card-container" id="teste_3">
-        Texto vvVerdevv, aaAzulaa, rrVermelhorr e mmMarca Textomm.
+        </div>
     </div>
 
     <script>
-        function processarCard(id) {
-            var el = document.getElementById(id);
+        // SCRIPT CORRIGIDO - VERSÃO ROBUSTA
+        (function() {
+            var el = document.getElementById("campo_teste");
             if (!el) return;
-            
-            // Lógica de linhas para suportar vários blocos no mesmo card
-            var linhas = el.innerHTML.split(/<br\s*\/?>/gi);
-            
+
+            // 1. Pega o HTML original
+            var htmlOriginal = el.innerHTML;
+
+            // 2. Divide em linhas baseadas no <br>
+            // O regex considera <br>, <br/>, <br /> e quebras de linha reais (\n)
+            var linhas = htmlOriginal.split(/<br\s*\/?>|\n/gi);
+
+            // 3. Processa cada linha
             var novoHtml = linhas.map(function(linha) {
-                var textoPuro = linha.replace(/<[^>]*>/g, "").trim(); 
-                if (textoPuro.length === 0) return linha;
-
-                // --- ATALHOS DE BLOCO ---
+                // Remove tags HTML para ler o comando limpo (evita sujeira do editor)
+                var textoPuro = linha.replace(/<[^>]*>/g, "").trim();
                 
-                // Alertas
-                if (textoPuro.startsWith("!!")) return criarAlerta(textoPuro.substring(2), "danger", "⚠️");
-                if (textoPuro.startsWith("ii")) return criarAlerta(textoPuro.substring(2), "info", "ℹ️");
-                if (textoPuro.startsWith("ww")) return criarAlerta(textoPuro.substring(2), "warning", "🔔");
-                if (textoPuro.startsWith("bb")) return criarAlerta(textoPuro.substring(2), "success", "💡");
+                if (textoPuro.length === 0) return "<br>"; // Mantém espaçamento
 
-                // Lei ($$) - Usa apenas classes
+                // --- ATALHO LEI ($$) ---
                 if (textoPuro.startsWith("$$")) {
-                    return criarDetalhe(textoPuro.substring(2), "⚖️ Legislação", ""); 
+                    var conteudo = textoPuro.substring(2).trim();
+                    var partes = conteudo.split("|");
+                    var titulo = "⚖️ Letra de Lei";
+                    var corpo = conteudo;
+
+                    if (partes.length > 1) {
+                        titulo = "⚖️ " + partes[0].trim();
+                        corpo = partes.slice(1).join("|").trim();
+                    }
+
+                    // Montagem segura da string HTML
+                    return `
+                    <details class="glass-details">
+                        <summary class="glass-summary">${titulo}</summary>
+                        <div class="glass-body">${corpo}</div>
+                    </details>`;
                 }
-                
-                // Jurisprudência (jj) - Adiciona classe 'juris-style' para diferenciar
+
+                // --- ATALHO JURISPRUDÊNCIA (jj) ---
                 if (textoPuro.startsWith("jj")) {
-                    return criarDetalhe(textoPuro.substring(2), "⚖️ Jurisprudência", "juris-style");
+                    var conteudo = textoPuro.substring(2).trim();
+                    var partes = conteudo.split("|");
+                    var titulo = "👨🏻‍⚖️ Entendimento do STF";
+                    var corpo = conteudo;
+
+                    if (partes.length > 1) {
+                        titulo = "👨🏻‍⚖️ " + partes[0].trim();
+                        corpo = partes.slice(1).join("|").trim();
+                    }
+
+                    return `
+                    <details class="glass-details">
+                        <summary class="glass-summary">${titulo}</summary>
+                        <div class="glass-body">${corpo}</div>
+                    </details>`;
                 }
 
+                // --- ATALHO ALERTA (!!) ---
+                if (textoPuro.startsWith("!!")) {
+                    var texto = textoPuro.substring(2).trim();
+                    return `
+                    <div class="alert-card alert-danger">
+                        <div class="alert-card__bar"></div>
+                        <div class="alert-card__icon">⚠️</div>
+                        <div class="alert-card__text">${texto}</div>
+                    </div>`;
+                }
+
+                // Se não for atalho, retorna a linha original (com suas tags HTML se tiver)
                 return linha;
-            }).join("<br>");
 
-            // --- ATALHOS DE TEXTO ---
-            novoHtml = novoHtml.replace(/vv(.*?)vv/g, '<span class="txt-verde">$1</span>');
-            novoHtml = novoHtml.replace(/aa(.*?)aa/g, '<span class="txt-azul">$1</span>');
-            novoHtml = novoHtml.replace(/rr(.*?)rr/g, '<span class="txt-vermelho">$1</span>');
-            novoHtml = novoHtml.replace(/mm(.*?)mm/g, '<span class="marca-texto">$1</span>');
+            }).join(""); // Junta tudo sem adicionar <br> extras, pois já tratamos
+
+            // --- 4. CORES (Processado no final sobre todo o HTML) ---
+            novoHtml = novoHtml.replace(/vv(.*?)vv/g, '<span class="txt-green" style="font-weight:bold;">$1</span>');
+            novoHtml = novoHtml.replace(/aa(.*?)aa/g, '<span class="txt-blue" style="font-weight:bold;">$1</span>');
             
+            // Aplica ao elemento
             el.innerHTML = novoHtml;
-        }
-
-        // Funções Auxiliares Limpas (Geram apenas HTML com classes)
-        function criarAlerta(texto, tipo, icone) {
-            return `
-                <div class="alert-card alert-${tipo}">
-                    <div class="alert-card__bar"></div>
-                    <div class="alert-card__icon">${icone}</div>
-                    <div class="alert-card__text">${texto.trim()}</div>
-                </div>`;
-        }
-
-        function criarDetalhe(conteudo, tituloPadrao, classeExtra) {
-            var partes = conteudo.split("|");
-            var titulo = tituloPadrao;
-            var texto = conteudo;
-
-            if (partes.length > 1) {
-                titulo = "⚖️ " + partes[0].trim();
-                texto = partes.slice(1).join("|").trim();
-            }
-
-            // AQUI ESTÁ A MUDANÇA: Sem style="..." forçado, apenas classes.
-            return `
-                <details class="glass-details">
-                    <summary class="glass-summary ${classeExtra}">${titulo}</summary>
-                    <div class="glass-body">${texto}</div>
-                </details>`;
-        }
-
-        // Executa
-        processarCard("teste_1");
-        processarCard("teste_2");
-        processarCard("teste_3");
+        })();
     </script>
 
 </body>
