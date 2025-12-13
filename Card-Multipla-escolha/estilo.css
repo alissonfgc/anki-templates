@@ -21,6 +21,7 @@
   box-shadow:0 6px 14px rgba(0,0,0,0.18);
   overflow:hidden;
 }
+
 .glass-summary {
   font-size:1.1em;
   font-weight:700;
@@ -31,6 +32,7 @@
   color:#111;
   background:rgba(255,255,255,0.25);
 }
+
 .glass-body {
   padding:12px 18px 14px;
   font-size:15px;
@@ -53,6 +55,7 @@
   font-weight:700;
   margin:8px 0;
 }
+
 .alert-card__bar{
   position:absolute;
   left:0; top:0; bottom:0;
@@ -60,6 +63,7 @@
   background:#55a9ff;
   border-radius:12px 0 0 12px;
 }
+
 .alert-card__icon{
   flex:0 0 auto;
   display:inline-flex;
@@ -73,12 +77,14 @@
   border-radius:50%;
   font-family:inherit;
 }
+
 .alert-card__text{
   margin:0 0 0 12px;
   color:#9fd6ff;
   line-height:1.25;
   font-size:1rem;
 }
+
 /* Variações de cor (opcional) */
 .alert-success{
   background:#145a32;
@@ -89,6 +95,7 @@
 .alert-success .alert-card__text{
   color:#c4f6d1;
 }
+
 .alert-danger{
   background:#6b1111;
 }
@@ -98,6 +105,7 @@
 .alert-danger .alert-card__text{
   color:#ffd6d1;
 }
+
 .alert-info{
   background:#12324f;
 }
@@ -111,11 +119,8 @@
   font-family:Georgia, serif;
 }
 
-/*
-=================================================
-  TEMA "DARK PRO" – CERTO / ERRADO
-=================================================
-*/
+
+
 
 /* ========= FUNDO E FONTE BASE ========= */
 .card {
@@ -131,12 +136,26 @@
 
 /* ========= BASE DO ADDON (Inalterada) ========= */
 .small { font-size: 15px; }
-table, td, th { border-collapse: collapse; padding: 5px; }
-table { display: inline-block; text-align: left; }
-label { display: inline-block; vertical-align: middle; margin-left: 0.4em; }
+
+table, td, th {
+  border-collapse: collapse;
+  padding: 5px;
+}
+table {
+  display: inline-block;
+  text-align: left;
+}
+
+label {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.4em;
+}
+
 .correct { background-color: lime; }
 .nightMode .correct { background-color: #009900; }
 .wrong { background-color: orangered; }
+
 .hidden {
   font-weight: bold;
   display: block;
@@ -158,17 +177,22 @@ label { display: inline-block; vertical-align: middle; margin-left: 0.4em; }
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
-h2 { text-align: center; }
+/* ========= TÍTULOS ========= */
+h2 {
+  text-align: center;
+}
 
-/* ========= Subtítulo (se usar <h4>) ========= */
+/* pill que se ajusta ao texto */
 h4 {
-  display:inline-block;
-  margin:0 0 10px;
+  display: inline-block;
+  max-width: 100%;
+  width: auto;
+  text-align: left;
   font-size: 13px;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #ffffff;
+  position: relative;
   padding: 12px 17px;
   border: 0;
   border-radius: 7px;
@@ -178,6 +202,7 @@ h4 {
     rgba(71, 81, 92, 1) 0%,
     rgba(11, 21, 30, 1) 45%
   );
+  color: #ffffff;
 }
 
 /* ========= CABEÇALHO / DISCIPLINA ========= */
@@ -210,6 +235,7 @@ h4 {
   gap: 16px;
   margin: 8px 0 24px;
 }
+
 .ce-botao {
   min-width: 120px;
   padding: 10px 22px;
@@ -222,17 +248,74 @@ h4 {
   color: #f0f0f0;
   transition: all 0.2s ease;
 }
+
 .ce-botao:hover {
   background: #404550;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
+
 .ce-botao.selecionado {
   background: #33a1ff;
   color: white;
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.1),
     0 4px 16px rgba(51, 161, 255, 0.3);
+}
+
+/* ========= ALTERNATIVAS MÚLTIPLA ESCOLHA ========= */
+.mc-opcoes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px auto 24px;
+  max-width: 650px;
+}
+
+.mc-botao {
+  flex: 1 1 calc(50% - 12px);
+  min-width: 220px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.32);
+  color: #f0f0f0;
+  font-size: 16px;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+  display: inline-block;
+  transition: all 0.18s ease;
+}
+
+/* quinta alternativa desce sozinha e fica mais estreita no centro */
+.mc-opcoes .mc-botao:nth-child(5) {
+  flex-basis: 100%;
+  max-width: 360px;
+}
+
+/* hover distinto (não igual ao Certo/Errado) */
+.mc-botao:hover {
+  background: rgba(60, 64, 75, 0.95);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+}
+
+/* estado selecionado (frente) */
+.mc-botao.selecionado {
+  background: rgba(51, 161, 255, 0.16);
+  border-color: rgba(51, 161, 255, 0.85);
+  box-shadow:
+    0 0 0 1px rgba(51, 161, 255, 0.6),
+    0 4px 14px rgba(0, 0, 0, 0.5);
+}
+
+/* letra da alternativa */
+.mc-letra {
+  font-weight: 700;
+  margin-right: 6px;
+  color: #b5d3ff;
 }
 
 /* ========= RESULTADO (CERTO/ERRADO) ========= */
@@ -245,21 +328,25 @@ h4 {
   font-weight: 700;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
 }
+
 .resposta-correta {
   background: -webkit-linear-gradient(135deg, #43a047, #1b5e20);
   background: linear-gradient(135deg, #43a047, #1b5e20);
   color: #ffffff;
 }
+
 .resposta-errada {
   background: -webkit-linear-gradient(135deg, #e53935, #b71c1c);
   background: linear-gradient(135deg, #e53935, #b71c1c);
   color: #ffffff;
 }
+
 .resposta-principal {
   font-size: 22px;
   font-weight: 800;
   margin-bottom: 6px;
 }
+
 .resposta-detalhe {
   font-size: 15px;
   opacity: 0.9;
@@ -296,6 +383,7 @@ h4 {
 .link-questao {
   margin: 15px 0 10px;
 }
+
 .link-questao a {
   display: inline-block;
   padding: 7px 16px;
@@ -311,6 +399,7 @@ h4 {
   color: #b5bfff;
   background: rgba(181, 191, 255, 0.2);
 }
+
 .link-questao a:hover {
   background: rgba(181, 191, 255, 0.35);
   color: #ffffff;
@@ -330,9 +419,11 @@ h4 {
   opacity: 0.6;
   transition: opacity 0.2s ease;
 }
+
 .container-geral:hover .logos-container {
   opacity: 1;
 }
+
 .logo-site {
   width: 36px;
   height: 36px;
@@ -342,13 +433,39 @@ h4 {
   transition: all 0.2s ease;
   filter: grayscale(1) invert(1) brightness(1.5);
 }
-.logo-site[src*="tecconcursos"] {
-  width: 36px;
-  height: 36px;
-}
+
 .logo-site:hover {
   transform: translateY(-2px) scale(1.1);
   filter: none;
+}
+
+/* ========= TEXTO DA ALTERNATIVA CORRETA (ABAIXO DA RESPOSTA) ========= */
+.gabarito-extra {
+  max-width: 650px;
+  margin: -6px auto 18px;
+  padding: 6px 14px;
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: #e4ecff;
+
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.gabarito-extra-icone {
+  font-size: 16px;
+  line-height: 1;
+  color: #7fe27f;
+}
+
+.gabarito-extra-texto {
+  text-align: left;
 }
 
 /* ========= RESPONSIVO (MOBILE) ========= */
@@ -372,6 +489,17 @@ h4 {
   .explicacao {
     font-size: 15px;
   }
+  .mc-opcoes {
+    flex-direction: column;
+  }
+  .mc-botao {
+    flex-basis: 100%;
+    min-width: 0;
+  }
+  .gabarito-extra {
+    font-size: 13px;
+    padding: 6px 12px;
+  }
 }
 
 /* ========= ANIMAÇÃO DE ACERTO (FOGUETE) ========= */
@@ -384,15 +512,18 @@ h4 {
   left: 50%;
   transform: translate(-50%, -50%) scale(0);
 }
+
 #animacao-acerto .animacao-imagem {
   width: 100px;
   height: auto;
   display: block;
 }
+
 #animacao-acerto.mostrar {
   display: block;
   animation: pop-e-some 1.5s ease-out;
 }
+
 @keyframes pop-e-some {
   0% {
     opacity: 0;

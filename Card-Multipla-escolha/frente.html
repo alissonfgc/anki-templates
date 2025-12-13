@@ -1,6 +1,6 @@
 <head> <!-- Temporário -->
   <link rel="stylesheet" href="estilo.css"> <!-- Temporário -->
-</head> <!-- Temporário -->
+</head>
 
 <script>
 if (void 0 === window.Persistence) { var _persistenceKey = "github.com/SimonLammer/anki-persistence/", _defaultKey = "_default"; if (window.Persistence_sessionStorage = function () { var e = !1; try { "object" == typeof window.sessionStorage && (e = !0, this.clear = function () { for (var e = 0; e < sessionStorage.length; e++) { var t = sessionStorage.key(e); 0 == t.indexOf(_persistenceKey) && (sessionStorage.removeItem(t), e--) } }, this.setItem = function (e, t) { void 0 == t && (t = e, e = _defaultKey), sessionStorage.setItem(_persistenceKey + e, JSON.stringify(t)) }, this.getItem = function (e) { return void 0 == e && (e = _defaultKey), JSON.parse(sessionStorage.getItem(_persistenceKey + e)) }, this.removeItem = function (e) { void 0 == e && (e = _defaultKey), sessionStorage.removeItem(_persistenceKey + e) }) } catch (e) { } this.isAvailable = function () { return e } }, window.Persistence_windowKey = function (e) { var t = window[e], i = !1; "object" == typeof t && (i = !0, this.clear = function () { t[_persistenceKey] = {} }, this.setItem = function (e, i) { void 0 == i && (i = e, e = _defaultKey), t[_persistenceKey][e] = i }, this.getItem = function (e) { return void 0 == e && (e = _defaultKey), t[_persistenceKey][e] || null }, this.removeItem = function (e) { void 0 == e && (e = _defaultKey), delete t[_persistenceKey][e] }, void 0 == t[_persistenceKey] && this.clear()), this.isAvailable = function () { return i } }, window.Persistence = new Persistence_sessionStorage, Persistence.isAvailable() || (window.Persistence = new Persistence_windowKey("py")), !Persistence.isAvailable()) { var titleStartIndex = window.location.toString().indexOf("title"), titleContentIndex = window.location.toString().indexOf("main", titleStartIndex); titleStartIndex > 0 && titleContentIndex > 0 && titleContentIndex - titleStartIndex < 10 && (window.Persistence = new Persistence_windowKey("qt")) } }
@@ -18,9 +18,32 @@ if (void 0 === window.Persistence) { var _persistenceKey = "github.com/SimonLamm
     {{Frente}}
   </div>
 
-  <div class="ce-opcoes">
-    <button class="ce-botao" onclick="registrarResposta(1, this)">Certo</button>
-    <button class="ce-botao" onclick="registrarResposta(0, this)">Errado</button>
+  <!-- OPÇÕES DE MÚLTIPLA ESCOLHA -->
+  <div class="mc-opcoes">
+    <button class="mc-botao" data-letra-original="A" onclick="registrarRespostaMC('A', this)">
+      <span class="mc-letra">A)</span>
+      <span class="mc-texto">{{Alternativa A}}</span>
+    </button>
+
+    <button class="mc-botao" data-letra-original="B" onclick="registrarRespostaMC('B', this)">
+      <span class="mc-letra">B)</span>
+      <span class="mc-texto">{{Alternativa B}}</span>
+    </button>
+
+    <button class="mc-botao" data-letra-original="C" onclick="registrarRespostaMC('C', this)">
+      <span class="mc-letra">C)</span>
+      <span class="mc-texto">{{Alternativa C}}</span>
+    </button>
+
+    <button class="mc-botao" data-letra-original="D" onclick="registrarRespostaMC('D', this)">
+      <span class="mc-letra">D)</span>
+      <span class="mc-texto">{{Alternativa D}}</span>
+    </button>
+
+    <button class="mc-botao" data-letra-original="E" onclick="registrarRespostaMC('E', this)">
+      <span class="mc-letra">E)</span>
+      <span class="mc-texto">{{Alternativa E}}</span>
+    </button>
   </div>
 
   <div class="link-questao">
@@ -38,31 +61,60 @@ if (void 0 === window.Persistence) { var _persistenceKey = "github.com/SimonLamm
 
 </div>
 
-</div> <!-- Temporário -->
+</div>
 
 <script>
-function registrarResposta(valor, botao) {
-  // grava a resposta do usuário (1 = Certo, 0 = Errado)
+// grava resposta pela LETRA ORIGINAL (A–E), mesmo embaralhado
+function registrarRespostaMC(letraOriginal, botao) {
   if (window.Persistence && Persistence.isAvailable()) {
-    Persistence.setItem('user_answer', valor);
+    // salva em duas chaves para compatibilidade com o verso
+    Persistence.setItem('user_answer_mc', letraOriginal);
+    Persistence.setItem('user_answer', letraOriginal);
   }
-
-  // feedback visual: destaca o botão clicado
-  var botoes = document.querySelectorAll('.ce-botao');
+  // feedback visual
+  var botoes = document.querySelectorAll('.mc-botao');
   botoes.forEach(function(b){ b.classList.remove('selecionado'); });
-  if (botao) {
-    botao.classList.add('selecionado');
-  }
+  if (botao) botao.classList.add('selecionado');
 }
 
-// quando carregar a frente de novo (rever a carta por exemplo),
-// mantém o botão que foi marcado anteriormente
 window.addEventListener('load', function () {
-  if (!(window.Persistence && Persistence.isAvailable())) return;
-  var valor = Persistence.getItem('user_answer');
-  if (valor === null || valor === undefined) return;
-  var seletor = '.ce-botao:nth-child(' + (valor == 1 ? '1' : '2') + ')';
-  var botao = document.querySelector(seletor);
-  if (botao) botao.classList.add('selecionado');
+  var container = document.querySelector('.mc-opcoes');
+  if (!container) return;
+
+  var botoes = Array.from(container.querySelectorAll('.mc-botao'));
+
+  // Remove alternativas cujo texto está vazio
+  var ativos = botoes.filter(function(btn){
+    var txtSpan = btn.querySelector('.mc-texto');
+    if (!txtSpan) return false;
+    var txt = (txtSpan.textContent || txtSpan.innerText || "").replace(/\s+/g, '');
+    return txt.length > 0;
+  });
+
+  // Embaralha (Fisher–Yates)
+  for (var i = ativos.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = ativos[i];
+    ativos[i] = ativos[j];
+    ativos[j] = tmp;
+  }
+
+  // Remonta container e renumera rótulo VISUAL A), B), C)...
+  var letrasVisiveis = ['A','B','C','D','E'];
+  container.innerHTML = '';
+  ativos.forEach(function(btn, idx){
+    var label = btn.querySelector('.mc-letra');
+    if (label) label.textContent = letrasVisiveis[idx] + ')';
+    container.appendChild(btn);
+  });
+
+  // Restaura opção já marcada (se houver)
+  if (window.Persistence && Persistence.isAvailable()) {
+    var letraSalva = Persistence.getItem('user_answer_mc') || Persistence.getItem('user_answer');
+    if (letraSalva) {
+      var btnSalvo = container.querySelector('.mc-botao[data-letra-original="'+ letraSalva +'"]');
+      if (btnSalvo) btnSalvo.classList.add('selecionado');
+    }
+  }
 });
 </script>

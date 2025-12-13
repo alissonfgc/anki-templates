@@ -1,16 +1,18 @@
 <head> <!-- Temporário -->
   <link rel="stylesheet" href="estilo.css"> <!-- Temporário -->
-</head> <!-- Temporário -->
+</head>
 
 <div id="animacao-acerto">
   <img src="https://em-content.zobj.net/source/apple/419/rocket_1f680.png" alt="Foguete" class="animacao-imagem">
 </div>
 
+<!-- SCRIPT DO ADDON (PERSISTENCE) - IGUAL AO DA FRENTE -->
 <script>
 if (void 0 === window.Persistence) { var _persistenceKey = "github.com/SimonLammer/anki-persistence/", _defaultKey = "_default"; if (window.Persistence_sessionStorage = function () { var e = !1; try { "object" == typeof window.sessionStorage && (e = !0, this.clear = function () { for (var e = 0; e < sessionStorage.length; e++) { var t = sessionStorage.key(e); 0 == t.indexOf(_persistenceKey) && (sessionStorage.removeItem(t), e--) } }, this.setItem = function (e, t) { void 0 == t && (t = e, e = _defaultKey), sessionStorage.setItem(_persistenceKey + e, JSON.stringify(t)) }, this.getItem = function (e) { return void 0 == e && (e = _defaultKey), JSON.parse(sessionStorage.getItem(_persistenceKey + e)) }, this.removeItem = function (e) { void 0 == e && (e = _defaultKey), sessionStorage.removeItem(_persistenceKey + e) }) } catch (e) { } this.isAvailable = function () { return e } }, window.Persistence_windowKey = function (e) { var t = window[e], i = !1; "object" == typeof t && (i = !0, this.clear = function () { t[_persistenceKey] = {} }, this.setItem = function (e, i) { void 0 == i && (i = e, e = _defaultKey), t[_persistenceKey][e] = i }, this.getItem = function (e) { return void 0 == e && (e = _defaultKey), t[_persistenceKey][e] || null }, this.removeItem = function (e) { void 0 == e && (e = _defaultKey), delete t[_persistenceKey][e] }, void 0 == t[_persistenceKey] && this.clear()), this.isAvailable = function () { return i } }, window.Persistence = new Persistence_sessionStorage, Persistence.isAvailable() || (window.Persistence = new Persistence_windowKey("py")), !Persistence.isAvailable()) { var titleStartIndex = window.location.toString().indexOf("title"), titleContentIndex = window.location.toString().indexOf("main", titleStartIndex); titleStartIndex > 0 && titleContentIndex > 0 && titleContentIndex - titleStartIndex < 10 && (window.Persistence = new Persistence_windowKey("qt")) } }
 </script>
 
 <div class="card"> <!-- Temporário -->
+
 <div class="container-geral">
 
   <div class="card-header">
@@ -21,8 +23,7 @@ if (void 0 === window.Persistence) { var _persistenceKey = "github.com/SimonLamm
     {{Frente}}
   </div>
 
-  <div id="resultado" class="resposta">
-    </div>
+  <div id="resultado" class="resposta"></div>
 
   <div class="titulo-assunto">
     {{Assunto da questão}}
@@ -45,66 +46,106 @@ if (void 0 === window.Persistence) { var _persistenceKey = "github.com/SimonLamm
     </a>
   </div>
 
+  <!-- ALTERNATIVAS ESCONDIDAS: USADAS PARA MOSTRAR O TEXTO DA CORRETA -->
+  <div id="mc-alternativas-hidden" class="hidden">
+    <div data-letra="A">{{Alternativa A}}</div>
+    <div data-letra="B">{{Alternativa B}}</div>
+    <div data-letra="C">{{Alternativa C}}</div>
+    <div data-letra="D">{{Alternativa D}}</div>
+    <div data-letra="E">{{Alternativa E}}</div>
+  </div>
+
 </div>
 
-</div> <!-- Temporário -->
+</div>
 
 <script>
-(function() {
+(function () {
   var resp = null;
 
   if (window.Persistence && Persistence.isAvailable()) {
-    resp = Persistence.getItem('user_answer');
+    // tenta primeiro a chave nova, depois a antiga
+    resp = Persistence.getItem('user_answer_mc') || Persistence.getItem('user_answer');
     Persistence.clear();
   }
 
   var resultadoDiv = document.getElementById('resultado');
 
-  // normaliza o campo {{Gabarito}} (aceita C, E, Certo, Errado, Verdadeiro, Falso...)
-  var gRaw = "{{Gabarito}}";
-  var gNorm = gRaw.trim().toLowerCase();
-  var g = 0; // 0 = Errado, 1 = Certo
+  // ===== Normaliza GABARITO (A, B, C, D, E) =====
+  var gRaw   = "{{Gabarito}}";
+  var gMatch = gRaw.toString().toLowerCase().match(/[a-e]/);
+  var letraGab = gMatch ? gMatch[0].toUpperCase() : null;
 
-  if (gNorm.startsWith('c') || gNorm.startsWith('v')) {
-    g = 1;
+  // ===== Normaliza RESPOSTA DO USUÁRIO =====
+  var letraResp = null;
+  if (resp !== null && resp !== undefined) {
+    var s = String(resp).trim();
+    // Se for número 0–4, converte para A–E (compatibilidade)
+    if (/^[0-4]$/.test(s)) {
+      var idx = parseInt(s, 10);
+      letraResp = "ABCDE".charAt(idx);
+    } else {
+      var m = s.toLowerCase().match(/[a-e]/);
+      if (m) letraResp = m[0].toUpperCase();
+    }
   }
 
-  var respNum = Number(resp);
-  var txtResp = (respNum === 1 ? "Certo" : "Errado");
-  var txtGab  = (g === 1 ? "Certo" : "Errado");
+  var txtGab  = letraGab ? ("Alternativa " + letraGab) : "Indefinido";
+  var txtResp = letraResp ? ("Alternativa " + letraResp) : "Nenhuma";
 
-  // === MUDANÇA #1: Bloco "Não Marcou" ===
-  if (resp === null || resp === undefined || isNaN(respNum)) {
+  // ===== MENSAGEM PRINCIPAL =====
+  if (!letraResp) {
     resultadoDiv.innerHTML =
       '<div class="resposta-principal">Não marcou</div>' +
       '<div class="resposta-detalhe">Gabarito: ' + txtGab + '</div>';
     resultadoDiv.classList.add('resposta-errada');
-    return;
+  } else {
+    var acertou = (letraGab && letraResp && letraGab === letraResp);
+
+    if (acertou) {
+      resultadoDiv.innerHTML =
+        '<div class="resposta-principal">Correto!</div>' +
+        '<div class="resposta-detalhe">Sua resposta: ' + txtResp + ' · Gabarito: ' + txtGab + '</div>';
+      resultadoDiv.classList.add('resposta-correta');
+
+      // Animação foguete
+      var anim = document.getElementById('animacao-acerto');
+      if (anim) {
+        anim.classList.remove('mostrar');
+        void anim.offsetWidth;
+        anim.classList.add('mostrar');
+      }
+    } else {
+      resultadoDiv.innerHTML =
+        '<div class="resposta-principal">Você errou</div>' +
+        '<div class="resposta-detalhe">Sua resposta: ' + txtResp + ' · Gabarito: ' + txtGab + '</div>';
+      resultadoDiv.classList.add('resposta-errada');
+    }
   }
 
-  var acertou = (respNum === g);
-
-  if (acertou) {
-    // Bloco "Acertou" (como já fizemos)
-    resultadoDiv.innerHTML =
-      '<div class="resposta-principal">Correto!</div>' +
-      '<div class="resposta-detalhe">Sua resposta: ' + txtResp + ' · Gabarito: ' + txtGab + '</div>';
-    resultadoDiv.classList.add('resposta-correta');
-
-    // Ativa a animação do foguete
-    var anim = document.getElementById('animacao-acerto');
-    if (anim) {
-      anim.classList.remove('mostrar');
-      void anim.offsetWidth;
-      anim.classList.add('mostrar');
+  // ===== BLOCO EXTRA COM TEXTO DA ALTERNATIVA CORRETA =====
+  if (letraGab) {
+    var hidden = document.getElementById('mc-alternativas-hidden');
+    if (hidden) {
+      var corretaNode = hidden.querySelector('[data-letra="' + letraGab + '"]');
+      if (corretaNode) {
+        // pega o HTML da alternativa (mantém negrito, etc)
+        var textoCorreta = corretaNode.innerHTML || '';
+        // ignora se estiver completamente vazia
+        var checkVazio = textoCorreta.replace(/<[^>]*>/g,'').replace(/\s+/g,'');
+        if (checkVazio.length > 0) {
+          var blocoExtra =
+            '<div class="gabarito-extra">' +
+              '<div class="gabarito-extra-icone">✔</div>' +
+              '<div class="gabarito-extra-texto">' +
+                '<div class="gabarito-extra-texto-rotulo">Alternativa correta (' + letraGab + ')</div>' +
+                '<div>' + textoCorreta + '</div>' +
+              '</div>' +
+            '</div>';
+          resultadoDiv.insertAdjacentHTML('afterend', blocoExtra);
+        }
+      }
     }
-
-  // === MUDANÇA #2: Bloco "Errou" ===
-  } else {
-    resultadoDiv.innerHTML =
-      '<div class="resposta-principal">Você errou</div>' +
-      '<div class="resposta-detalhe">Sua resposta: ' + txtResp + ' · Gabarito: ' + txtGab + '</div>';
-    resultadoDiv.classList.add('resposta-errada');
   }
 })();
 </script>
