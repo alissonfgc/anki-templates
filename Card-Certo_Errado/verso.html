@@ -1,0 +1,107 @@
+<head>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+
+<div id="animacao-acerto">
+  <img src="https://em-content.zobj.net/source/apple/419/rocket_1f680.png" alt="Foguete" class="animacao-imagem">
+</div>
+
+<script>
+if (void 0 === window.Persistence) { var _persistenceKey = "github.com/SimonLammer/anki-persistence/", _defaultKey = "_default"; if (window.Persistence_sessionStorage = function () { var e = !1; try { "object" == typeof window.sessionStorage && (e = !0, this.clear = function () { for (var e = 0; e < sessionStorage.length; e++) { var t = sessionStorage.key(e); 0 == t.indexOf(_persistenceKey) && (sessionStorage.removeItem(t), e--) } }, this.setItem = function (e, t) { void 0 == t && (t = e, e = _defaultKey), sessionStorage.setItem(_persistenceKey + e, JSON.stringify(t)) }, this.getItem = function (e) { return void 0 == e && (e = _defaultKey), JSON.parse(sessionStorage.getItem(_persistenceKey + e)) }, this.removeItem = function (e) { void 0 == e && (e = _defaultKey), sessionStorage.removeItem(_persistenceKey + e) }) } catch (e) { } this.isAvailable = function () { return e } }, window.Persistence_windowKey = function (e) { var t = window[e], i = !1; "object" == typeof t && (i = !0, this.clear = function () { t[_persistenceKey] = {} }, this.setItem = function (e, i) { void 0 == i && (i = e, e = _defaultKey), t[_persistenceKey][e] = i }, this.getItem = function (e) { return void 0 == e && (e = _defaultKey), t[_persistenceKey][e] || null }, this.removeItem = function (e) { void 0 == e && (e = _defaultKey), delete t[_persistenceKey][e] }, void 0 == t[_persistenceKey] && this.clear()), this.isAvailable = function () { return i } }, window.Persistence = new Persistence_sessionStorage, Persistence.isAvailable() || (window.Persistence = new Persistence_windowKey("py")), !Persistence.isAvailable()) { var titleStartIndex = window.location.toString().indexOf("title"), titleContentIndex = window.location.toString().indexOf("main", titleStartIndex); titleStartIndex > 0 && titleContentIndex > 0 && titleContentIndex - titleStartIndex < 10 && (window.Persistence = new Persistence_windowKey("qt")) } }
+</script>
+
+<div class="container-geral">
+
+  <div class="card-header">
+    {{Disciplina}}
+  </div>
+
+  <div class="texto-frente">
+    {{Frente}}
+  </div>
+
+  <div id="resultado" class="resposta">
+    </div>
+
+  <div class="titulo-assunto">
+    {{Assunto da questão}}
+  </div>
+
+  <div class="explicacao">
+    {{Explicação}}
+  </div>
+
+  <div class="link-questao">
+    <a href="{{Link da questão}}" target="_blank">Link da questão</a>
+  </div>
+
+  <div class="logos-container">
+    <a href="https://www.tecconcursos.com.br" target="_blank">
+      <img src="https://cdn.tecconcursos.com.br/blog/img/logo-coordenacao.png" class="logo-site">
+    </a>
+    <a href="https://www.qconcursos.com" target="_blank">
+      <img src="https://odin.qconcursos.com/packs/assets/qc-afe3db90abed2de7f6ed.svg" class="logo-site">
+    </a>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  var resp = null;
+
+  if (window.Persistence && Persistence.isAvailable()) {
+    resp = Persistence.getItem('user_answer');
+    Persistence.clear();
+  }
+
+  var resultadoDiv = document.getElementById('resultado');
+
+  // normaliza o campo {{Gabarito}} (aceita C, E, Certo, Errado, Verdadeiro, Falso...)
+  var gRaw = "{{Gabarito}}";
+  var gNorm = gRaw.trim().toLowerCase();
+  var g = 0; // 0 = Errado, 1 = Certo
+
+  if (gNorm.startsWith('c') || gNorm.startsWith('v')) {
+    g = 1;
+  }
+
+  var respNum = Number(resp);
+  var txtResp = (respNum === 1 ? "Certo" : "Errado");
+  var txtGab  = (g === 1 ? "Certo" : "Errado");
+
+  // === MUDANÇA #1: Bloco "Não Marcou" ===
+  if (resp === null || resp === undefined || isNaN(respNum)) {
+    resultadoDiv.innerHTML =
+      '<div class="resposta-principal">Não marcou</div>' +
+      '<div class="resposta-detalhe">Gabarito: ' + txtGab + '</div>';
+    resultadoDiv.classList.add('resposta-errada');
+    return;
+  }
+
+  var acertou = (respNum === g);
+
+  if (acertou) {
+    // Bloco "Acertou" (como já fizemos)
+    resultadoDiv.innerHTML =
+      '<div class="resposta-principal">Correto!</div>' +
+      '<div class="resposta-detalhe">Sua resposta: ' + txtResp + ' · Gabarito: ' + txtGab + '</div>';
+    resultadoDiv.classList.add('resposta-correta');
+
+    // Ativa a animação do foguete
+    var anim = document.getElementById('animacao-acerto');
+    if (anim) {
+      anim.classList.remove('mostrar');
+      void anim.offsetWidth;
+      anim.classList.add('mostrar');
+    }
+
+  // === MUDANÇA #2: Bloco "Errou" ===
+  } else {
+    resultadoDiv.innerHTML =
+      '<div class="resposta-principal">Você errou</div>' +
+      '<div class="resposta-detalhe">Sua resposta: ' + txtResp + ' · Gabarito: ' + txtGab + '</div>';
+    resultadoDiv.classList.add('resposta-errada');
+  }
+})();
+</script>
