@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teste Geral de Atalhos (Blindado)</title>
+    <title>Teste Geral de Atalhos (Visual Original)</title>
     
     <style>
-        /* --- 1. CSS GERAL DO AMBIENTE --- */
+        /* --- 1. CONFIGURAÇÃO GERAL --- */
         body {
-            background-color: #2f2f31; /* Fundo do Anki */
+            background-color: #2f2f31;
             padding: 20px;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             color: white;
         }
         
-        /* Container para teste */
         .card-container {
             background-color: #3e3e40;
             padding: 15px;
@@ -23,71 +22,76 @@
             border: 1px solid #555;
         }
 
-        /* --- 2. CSS DOS ALERTAS (Embutido para não quebrar) --- */
+        /* --- 2. CSS DOS ALERTAS (Fixos para garantir funcionamento) --- */
         .alert-card {
-            display: flex;
-            align-items: stretch;
-            border-radius: 8px;
-            overflow: hidden;
-            margin: 10px 0;
-            border: 1px solid transparent;
-            background-color: rgba(255, 255, 255, 0.05);
+            display: flex; align-items: stretch; border-radius: 8px; overflow: hidden; margin: 10px 0;
+            border: 1px solid transparent; background-color: rgba(255, 255, 255, 0.05);
         }
         .alert-card__bar { width: 6px; }
-        .alert-card__icon {
-            display: flex; align-items: center; justify-content: center;
-            padding: 0 15px; font-size: 22px;
-        }
+        .alert-card__icon { display: flex; align-items: center; justify-content: center; padding: 0 15px; font-size: 22px; }
         .alert-card__text { padding: 10px; flex: 1; font-size: 0.95em; }
 
-        /* Cores Específicas */
-        /* Perigo (!!) */
+        /* Cores dos Alertas */
         .alert-danger { background-color: rgba(220, 53, 69, 0.15); border-color: rgba(220, 53, 69, 0.3); }
-        .alert-danger .alert-card__bar, .alert-danger .alert-card__icon { color: #dc3545; background-color: transparent; }
         .alert-danger .alert-card__bar { background-color: #dc3545; }
+        .alert-danger .alert-card__icon { color: #dc3545; }
         .alert-danger .alert-card__text { color: #ffb3b3; }
 
-        /* Info (ii) */
         .alert-info { background-color: rgba(23, 162, 184, 0.15); border-color: rgba(23, 162, 184, 0.3); }
         .alert-info .alert-card__bar { background-color: #17a2b8; }
         .alert-info .alert-card__icon { color: #17a2b8; }
         .alert-info .alert-card__text { color: #d1ecf1; }
 
-        /* Aviso (ww) */
         .alert-warning { background-color: rgba(255, 193, 7, 0.15); border-color: rgba(255, 193, 7, 0.3); }
         .alert-warning .alert-card__bar { background-color: #ffc107; }
         .alert-warning .alert-card__icon { color: #ffc107; }
         .alert-warning .alert-card__text { color: #fff3cd; }
 
-        /* Bizu (bb) */
         .alert-success { background-color: rgba(40, 167, 69, 0.15); border-color: rgba(40, 167, 69, 0.3); }
         .alert-success .alert-card__bar { background-color: #28a745; }
         .alert-success .alert-card__icon { color: #28a745; }
         .alert-success .alert-card__text { color: #d4edda; }
 
-
-        /* --- 3. CSS DO GLASSMORPHISM (Lei e Juris) --- */
+        /* --- 3. CSS DE VIDRO (GLASSMORPHISM) --- */
+        /* Tentei replicar o estilo original aqui. Se estiver diferente, substitua pelo seu CSS! */
+        
         details.glass-details {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+            border-radius: 10px;
             margin: 10px 0;
             overflow: hidden;
+            backdrop-filter: blur(5px); /* O efeito de desfoque */
         }
+        
         summary.glass-summary {
-            padding: 12px;
+            padding: 12px 15px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 600;
             background: rgba(255, 255, 255, 0.02);
-            list-style: none; /* Remove seta padrão */
-            color: #e0e0e0;
+            list-style: none;
+            color: #ffffff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.2s;
         }
-        summary.glass-summary::marker { display: none; }
+        
+        summary.glass-summary:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        summary.glass-summary::marker { display: none; } /* Remove setinha padrão */
+        
         .glass-body {
             padding: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #cccccc;
-            line-height: 1.5;
+            color: #dddddd;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        /* Variação para Jurisprudência (Borda Roxa Lateral) */
+        /* Se não gostar da borda roxa, basta apagar a linha 'border-left' abaixo */
+        summary.glass-summary.juris-style {
+            border-left: 4px solid #8a2be2; 
         }
 
         /* --- 4. CSS DE TEXTO --- */
@@ -100,67 +104,63 @@
 </head>
 <body>
 
-    <h3>Teste de Blocos</h3>
-    <div class="card-container" id="teste_1">!!Cuidado! Pegadinha da banca aqui.</div>
-    <div class="card-container" id="teste_2">iiInfo: Prazo de 5 dias.</div>
-    <div class="card-container" id="teste_3">wwAviso: Jurisprudência antiga.</div>
-    <div class="card-container" id="teste_4">bbBizu: Use o método X.</div>
-
-    <h3>Teste de Vidro (Lei/Juris)</h3>
-    <div class="card-container" id="teste_5">$$Art 5º | Todos são iguais perante a lei.</div>
-    <div class="card-container" id="teste_6">jjSúmula 10 | Reserva de Plenário.</div>
-
-    <h3>Teste de Texto</h3>
-    <div class="card-container" id="teste_7">
-        Texto vvVerdevv, aaAzulaa, rrVermelhorr e mmMarca Textomm.
+    <h3>1. Blocos de Alerta</h3>
+    <div class="card-container" id="teste_1">
+        !!Cuidado! Pegadinha da banca.
+        <br><br>
+        iiInfo: Prazo processual de 15 dias.
+        <br><br>
+        wwAviso: Jurisprudência superada.
+        <br><br>
+        bbBizu: Regra do Mínimo Múltiplo.
     </div>
 
+    <h3>2. Blocos de Vidro (Original)</h3>
+    <div class="card-container" id="teste_2">
+        $$Art. 5º | Todos são iguais perante a lei, sem distinção de qualquer natureza.
+        <br><br>
+        jjSúmula Vinculante 10 | A cláusula de reserva de plenário exige votação da maioria absoluta.
+    </div>
+
+    <h3>3. Texto Colorido</h3>
+    <div class="card-container" id="teste_3">
+        Texto vvVerdevv, aaAzulaa, rrVermelhorr e mmMarca Textomm.
+    </div>
 
     <script>
         function processarCard(id) {
             var el = document.getElementById(id);
             if (!el) return;
             
-            var html = el.innerHTML.trim();
-            var texto = el.innerText.trim(); // Texto puro para checar o inicio
-
-            // --- 1. BLOCOS (Substituição Total) ---
-
-            // !! Alerta Vermelho
-            if (texto.startsWith("!!")) {
-                el.innerHTML = criarAlerta(texto.substring(2), "danger", "⚠️");
-                return;
-            }
-            // ii Info Azul
-            if (texto.startsWith("ii")) {
-                el.innerHTML = criarAlerta(texto.substring(2), "info", "ℹ️");
-                return;
-            }
-            // ww Aviso Amarelo
-            if (texto.startsWith("ww")) {
-                el.innerHTML = criarAlerta(texto.substring(2), "warning", "🔔");
-                return;
-            }
-            // bb Bizu Verde
-            if (texto.startsWith("bb")) {
-                el.innerHTML = criarAlerta(texto.substring(2), "success", "💡");
-                return;
-            }
-            // $$ Lei
-            if (texto.startsWith("$$")) {
-                el.innerHTML = criarDetalhe(texto.substring(2), "⚖️ Legislação");
-                return;
-            }
-            // jj Jurisprudência
-            if (texto.startsWith("jj")) {
-                el.innerHTML = criarDetalhe(texto.substring(2), "⚖️ Jurisprudência", "border-left: 4px solid #8a2be2;");
-                return;
-            }
-
-            // --- 2. TEXTO (Substituição Parcial) ---
+            // Lógica de linhas para suportar vários blocos no mesmo card
+            var linhas = el.innerHTML.split(/<br\s*\/?>/gi);
             
-            // Se chegou aqui, não é bloco. Processa as cores no HTML existente.
-            var novoHtml = html;
+            var novoHtml = linhas.map(function(linha) {
+                var textoPuro = linha.replace(/<[^>]*>/g, "").trim(); 
+                if (textoPuro.length === 0) return linha;
+
+                // --- ATALHOS DE BLOCO ---
+                
+                // Alertas
+                if (textoPuro.startsWith("!!")) return criarAlerta(textoPuro.substring(2), "danger", "⚠️");
+                if (textoPuro.startsWith("ii")) return criarAlerta(textoPuro.substring(2), "info", "ℹ️");
+                if (textoPuro.startsWith("ww")) return criarAlerta(textoPuro.substring(2), "warning", "🔔");
+                if (textoPuro.startsWith("bb")) return criarAlerta(textoPuro.substring(2), "success", "💡");
+
+                // Lei ($$) - Usa apenas classes
+                if (textoPuro.startsWith("$$")) {
+                    return criarDetalhe(textoPuro.substring(2), "⚖️ Legislação", ""); 
+                }
+                
+                // Jurisprudência (jj) - Adiciona classe 'juris-style' para diferenciar
+                if (textoPuro.startsWith("jj")) {
+                    return criarDetalhe(textoPuro.substring(2), "⚖️ Jurisprudência", "juris-style");
+                }
+
+                return linha;
+            }).join("<br>");
+
+            // --- ATALHOS DE TEXTO ---
             novoHtml = novoHtml.replace(/vv(.*?)vv/g, '<span class="txt-verde">$1</span>');
             novoHtml = novoHtml.replace(/aa(.*?)aa/g, '<span class="txt-azul">$1</span>');
             novoHtml = novoHtml.replace(/rr(.*?)rr/g, '<span class="txt-vermelho">$1</span>');
@@ -169,17 +169,17 @@
             el.innerHTML = novoHtml;
         }
 
-        // --- FUNÇÕES AUXILIARES ---
-        function criarAlerta(conteudo, tipo, icone) {
+        // Funções Auxiliares Limpas (Geram apenas HTML com classes)
+        function criarAlerta(texto, tipo, icone) {
             return `
                 <div class="alert-card alert-${tipo}">
                     <div class="alert-card__bar"></div>
                     <div class="alert-card__icon">${icone}</div>
-                    <div class="alert-card__text">${conteudo.trim()}</div>
+                    <div class="alert-card__text">${texto.trim()}</div>
                 </div>`;
         }
 
-        function criarDetalhe(conteudo, tituloPadrao, estiloExtra) {
+        function criarDetalhe(conteudo, tituloPadrao, classeExtra) {
             var partes = conteudo.split("|");
             var titulo = tituloPadrao;
             var texto = conteudo;
@@ -189,19 +189,18 @@
                 texto = partes.slice(1).join("|").trim();
             }
 
-            var styleSum = estiloExtra ? `style="${estiloExtra}"` : "";
-
+            // AQUI ESTÁ A MUDANÇA: Sem style="..." forçado, apenas classes.
             return `
                 <details class="glass-details">
-                    <summary class="glass-summary" ${styleSum}>${titulo}</summary>
+                    <summary class="glass-summary ${classeExtra}">${titulo}</summary>
                     <div class="glass-body">${texto}</div>
                 </details>`;
         }
 
-        // --- RODAR TESTES ---
-        for (let i = 1; i <= 7; i++) {
-            processarCard("teste_" + i);
-        }
+        // Executa
+        processarCard("teste_1");
+        processarCard("teste_2");
+        processarCard("teste_3");
     </script>
 
 </body>
