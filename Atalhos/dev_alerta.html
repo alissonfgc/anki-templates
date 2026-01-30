@@ -3,227 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teste Final - Card Dark Pro</title>
+    <title>Ambiente de Teste - Sintaxe Blindada</title>
     
     <style>
-        /* ================================================= */
-        /* 1. O SEU CSS (Copiado exatamente como enviou)    */
-        /* ================================================= */
-
-        /* ATALHOS REAPROVEITÁVEIS */
+        /* ======================================================= */
+        /* COLE AQUI O SEU CSS (O MESMO DO ANKI)                   */
+        /* ======================================================= */
+        
         .txt-green { color:#32a852; }
         .txt-red   { color:#d13242; }
         .txt-blue  { color:#323dd1; }
 
-        /* Details “vidro” genéricos */
         .glass-details {
-            width:100%;
-            border-radius:14px;
-            padding:0;
-            margin:8px 0;
+            width:100%; border-radius:14px; padding:0; margin:8px 0;
             background:rgba(255,255,255,0.55);
             backdrop-filter:blur(12px) saturate(160%);
             -webkit-backdrop-filter:blur(12px) saturate(160%);
             border:1px solid rgba(255,255,255,0.45);
             box-shadow:0 6px 14px rgba(0,0,0,0.18);
-            overflow:hidden;
-            text-align: left; /* Garante alinhamento interno */
+            overflow:hidden; text-align: left;
         }
         .glass-summary {
-            font-size:1.1em;
-            font-weight:700;
-            padding:10px 14px;
-            text-align:center;
-            cursor:pointer;
-            list-style:none;
-            color:#111;
-            background:rgba(255,255,255,0.25);
+            font-size:1.1em; font-weight:700; padding:10px 14px;
+            text-align:center; cursor:pointer; list-style:none;
+            color:#111; background:rgba(255,255,255,0.25);
         }
-        /* Remove a seta padrão do details em alguns navegadores */
         .glass-summary::-webkit-details-marker { display: none; }
-
         .glass-body {
-            padding:12px 18px 14px;
-            font-size:15px;
-            line-height:1.48;
-            color:#000;
-            text-align:justify;
+            padding:12px 18px 14px; font-size:15px; line-height:1.48;
+            color:#000; text-align:justify;
         }
 
-        /* Alert cards reutilizáveis */
         .alert-card{
-            position:relative;
-            display:flex;
-            align-items:center;
-            width:100%;
-            padding:14px 16px;
-            border-radius:12px;
-            background:#1a1f66;
-            box-shadow:0 6px 16px rgba(0,0,0,.08);
-            color:#bfe4ff;
-            font-weight:700;
-            margin:8px 0;
-            text-align: left;
+            position:relative; display:flex; align-items:center; width:100%;
+            padding:14px 16px; border-radius:12px; background:#1a1f66;
+            box-shadow:0 6px 16px rgba(0,0,0,.08); color:#bfe4ff;
+            font-weight:700; margin:8px 0; text-align: left;
         }
         .alert-card__bar{
-            position:absolute;
-            left:0; top:0; bottom:0;
-            width:8px;
-            background:#55a9ff;
-            border-radius:12px 0 0 12px;
+            position:absolute; left:0; top:0; bottom:0; width:8px;
+            background:#55a9ff; border-radius:12px 0 0 12px;
         }
         .alert-card__icon{
-            flex:0 0 auto;
-            display:inline-flex;
-            align-items:center;
-            justify-content:center;
-            width:28px; height:28px;
-            margin-left:12px;
-            color:inherit;
-            background:rgba(142,203,255,.15);
-            border:2px solid #8ecbff;
-            border-radius:50%;
-            font-family:inherit;
+            flex:0 0 auto; display:inline-flex; align-items:center;
+            justify-content:center; width:28px; height:28px; margin-left:12px;
+            color:inherit; background:rgba(142,203,255,.15);
+            border:2px solid #8ecbff; border-radius:50%; font-family:inherit;
         }
         .alert-card__text{
-            margin:0 0 0 12px;
-            color:#9fd6ff;
-            line-height:1.25;
-            font-size:1rem;
+            margin:0 0 0 12px; color:#9fd6ff; line-height:1.25; font-size:1rem;
         }
-        .alert-danger{
-            background:#6b1111;
-        }
-        .alert-danger .alert-card__bar{
-            background:#e74c3c;
-        }
-        .alert-danger .alert-card__text{
-            color:#ffd6d1;
-        }
+        
+        .alert-success{ background:#145a32; }
+        .alert-success .alert-card__bar{ background:#2ecc71; }
+        .alert-success .alert-card__text{ color:#c4f6d1; }
+        
+        .alert-danger{ background:#6b1111; }
+        .alert-danger .alert-card__bar{ background:#e74c3c; }
+        .alert-danger .alert-card__text{ color:#ffd6d1; }
+        
+        .alert-info{ background:#12324f; }
+        .alert-info .alert-card__bar{ background:#3498db; }
+        .alert-info .alert-card__text{ color:#d0eaff; }
 
-        /* TEMA DARK PRO BASE */
-        .card {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-            font-size: 18px;
-            text-align: center;
-            color: #f0f0f0;
-            background-color: #646464;
-            /* SVG Background simplificado para o teste não ficar pesado */
-            background-image: radial-gradient(#777 1px, transparent 1px);
-            background-size: 20px 20px;
-            padding: 20px;
-            min-height: 100vh;
-        }
-
-        .container-geral {
-            max-width: 720px;
-            margin: 0 auto;
-            padding: 24px;
-            border-radius: 18px;
-            background: rgba(26, 28, 32, 0.88);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
+        /* Ajustes para visualização na IDE */
+        body { background-color: #333; color: #eee; font-family: sans-serif; padding: 20px; }
+        .container-teste { max-width: 600px; margin: 0 auto; border: 1px dashed #555; padding: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <div class="container-geral" id="campo_teste">
-            
-            !!Cuidado! Isso é uma pegadinha da banca.
-            <br><br>
-            $$Art. 5º CF | Todos são iguais perante a lei, sem distinção de qualquer natureza.
-            <br><br>
-            jjSúmula Vinculante 10 | A cláusula de reserva de plenário deve ser respeitada.
-            <br><br>
-            Texto normal com vvpalavra verdevv e aaazul aqui aa.
+    <div class="container-teste" id="campo_teste">
+        <h3>Teste Definitivo</h3>
+        
+        alerta#cuidado:: Cuidado com a pegadinha da banca!
+        <br><br>
+        alerta#bizu:: O mnemônico é SOCIDIVAPLU.
+        <br><br>
+        alerta#info:: Atualizado conforme Lei 14.123.
+        <br><br>
+        detalhes#lei:: Art. 5º CF | Todos são iguais perante a lei.
+        <br><br>
+        detalhes#juris:: Súmula Vinculante 10 | A cláusula de reserva de plenário.
+        <br><br>
+        Texto normal com vvverde vv, aaazul aa, rrvermelho rr e mm marca texto mm.
 
-        </div>
     </div>
 
     <script>
-        // SCRIPT CORRIGIDO - VERSÃO ROBUSTA
         (function() {
             var el = document.getElementById("campo_teste");
             if (!el) return;
 
-            // 1. Pega o HTML original
-            var htmlOriginal = el.innerHTML;
+            // 1. Quebra o HTML por linhas (suporta <br> e \n)
+            var linhas = el.innerHTML.split(/<br\s*\/?>|\n/gi);
 
-            // 2. Divide em linhas baseadas no <br>
-            // O regex considera <br>, <br/>, <br /> e quebras de linha reais (\n)
-            var linhas = htmlOriginal.split(/<br\s*\/?>|\n/gi);
-
-            // 3. Processa cada linha
             var novoHtml = linhas.map(function(linha) {
-                // Remove tags HTML para ler o comando limpo (evita sujeira do editor)
-                var textoPuro = linha.replace(/<[^>]*>/g, "").trim();
+                // 2. Limpeza Profunda: Remove tags HTML e espaços não quebráveis (&nbsp;)
+                // Isso garante que "<b>alerta#bizu::</b>" seja lido corretamente
+                var textoLimpo = linha.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim();
                 
-                if (textoPuro.length === 0) return "<br>"; // Mantém espaçamento
+                if (textoLimpo.length === 0) return "<br>";
 
-                // --- ATALHO LEI ($$) ---
-                if (textoPuro.startsWith("$$")) {
-                    var conteudo = textoPuro.substring(2).trim();
+                var match; // Variável para guardar o resultado do Regex
+
+                // ======================================================
+                // BLOCO DE DETECÇÃO (USANDO REGEX CASE-INSENSITIVE)
+                // ======================================================
+
+                // --- 1. LEI (detalhes#lei::) ---
+                // Regex captura tudo depois de "::"
+                if (match = textoLimpo.match(/^detalhes#lei::\s*(.*)/i)) {
+                    var conteudo = match[1]; // Pega o texto capturado
                     var partes = conteudo.split("|");
                     var titulo = "⚖️ Letra de Lei";
                     var corpo = conteudo;
-
                     if (partes.length > 1) {
                         titulo = "⚖️ " + partes[0].trim();
                         corpo = partes.slice(1).join("|").trim();
                     }
-
-                    // Montagem segura da string HTML
-                    return `
-                    <details class="glass-details">
-                        <summary class="glass-summary">${titulo}</summary>
-                        <div class="glass-body">${corpo}</div>
-                    </details>`;
+                    // Retorno em LINHA ÚNICA CONCATENADA para evitar erro de indentação
+                    return '<details class="glass-details"><summary class="glass-summary">' + titulo + '</summary><div class="glass-body">' + corpo + '</div></details>';
                 }
 
-                // --- ATALHO JURISPRUDÊNCIA (jj) ---
-                if (textoPuro.startsWith("jj")) {
-                    var conteudo = textoPuro.substring(2).trim();
+                // --- 2. JURISPRUDÊNCIA (detalhes#juris::) ---
+                if (match = textoLimpo.match(/^detalhes#juris::\s*(.*)/i)) {
+                    var conteudo = match[1];
                     var partes = conteudo.split("|");
                     var titulo = "👨🏻‍⚖️ Entendimento do STF";
                     var corpo = conteudo;
-
                     if (partes.length > 1) {
                         titulo = "👨🏻‍⚖️ " + partes[0].trim();
                         corpo = partes.slice(1).join("|").trim();
                     }
-
-                    return `
-                    <details class="glass-details">
-                        <summary class="glass-summary">${titulo}</summary>
-                        <div class="glass-body">${corpo}</div>
-                    </details>`;
+                    return '<details class="glass-details"><summary class="glass-summary">' + titulo + '</summary><div class="glass-body">' + corpo + '</div></details>';
                 }
 
-                // --- ATALHO ALERTA (!!) ---
-                if (textoPuro.startsWith("!!")) {
-                    var texto = textoPuro.substring(2).trim();
-                    return `
-                    <div class="alert-card alert-danger">
-                        <div class="alert-card__bar"></div>
-                        <div class="alert-card__icon">⚠️</div>
-                        <div class="alert-card__text">${texto}</div>
-                    </div>`;
+                // --- 3. ALERTA CUIDADO (alerta#cuidado::) ---
+                if (match = textoLimpo.match(/^alerta#cuidado::\s*(.*)/i)) {
+                    var texto = match[1];
+                    return '<div class="alert-card alert-danger"><div class="alert-card__bar"></div><div class="alert-card__icon">⚠️</div><div class="alert-card__text">' + texto + '</div></div>';
                 }
 
-                // Se não for atalho, retorna a linha original (com suas tags HTML se tiver)
+                // --- 4. ALERTA BIZU (alerta#bizu::) ---
+                if (match = textoLimpo.match(/^alerta#bizu::\s*(.*)/i)) {
+                    var texto = match[1];
+                    return '<div class="alert-card alert-success"><div class="alert-card__bar"></div><div class="alert-card__icon">💡</div><div class="alert-card__text">' + texto + '</div></div>';
+                }
+
+                // --- 5. ALERTA INFO (alerta#info::) ---
+                if (match = textoLimpo.match(/^alerta#info::\s*(.*)/i)) {
+                    var texto = match[1];
+                    return '<div class="alert-card alert-info"><div class="alert-card__bar"></div><div class="alert-card__icon">ℹ️</div><div class="alert-card__text">' + texto + '</div></div>';
+                }
+
+                // Se não casou com nenhum comando, devolve a linha original
                 return linha;
 
-            }).join(""); // Junta tudo sem adicionar <br> extras, pois já tratamos
+            }).join(""); // Junta tudo
 
-            // --- 4. CORES (Processado no final sobre todo o HTML) ---
-            novoHtml = novoHtml.replace(/vv(.*?)vv/g, '<span class="txt-green" style="font-weight:bold;">$1</span>');
-            novoHtml = novoHtml.replace(/aa(.*?)aa/g, '<span class="txt-blue" style="font-weight:bold;">$1</span>');
-            
-            // Aplica ao elemento
+            // 3. Processamento de Cores (Inline)
+            // Estes podem ficar no meio do texto, então usamos replace global
+            novoHtml = novoHtml.replace(/vv(.*?)vv/g, '<span class="txt-green" style="font-weight:bold; color:#32a852;">$1</span>');
+            novoHtml = novoHtml.replace(/aa(.*?)aa/g, '<span class="txt-blue" style="font-weight:bold; color:#323dd1;">$1</span>');
+            novoHtml = novoHtml.replace(/rr(.*?)rr/g, '<span class="txt-red" style="font-weight:bold; color:#d13242;">$1</span>');
+            novoHtml = novoHtml.replace(/mm(.*?)mm/g, '<span style="background-color:#ffeb3b; color:black; padding:0 4px; border-radius:3px;">$1</span>');
+
             el.innerHTML = novoHtml;
         })();
     </script>
-
 </body>
 </html>
